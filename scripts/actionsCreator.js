@@ -77,24 +77,40 @@ const actions = {
 };
 
 /**
- * A function that adds missing skill actions to a PF2e character
+ * Determines which skills qualify for additional actions based on actor type.
+ * PCs use rank >= 1 (Trained). NPCs treat all visible skills as trained.
+ * @param {PF2EActor} actor
+ * @returns {{ slugs: string[], names: string[] }}
+ */
+function getTrainedSkills(actor) {
+  const skills = actor.system.skills;
+  const isNPC = actor.type === "npc";
+
+  const entries = Object.entries(skills).filter(([key, skill]) =>
+    isNPC ? skill.visible : skill.rank >= 1
+  );
+
+  return {
+    slugs: entries.map(([key, skill]) => skill.slug),
+    names: entries.map(([key, skill]) => skill.label),
+  };
+}
+
+/**
+ * A function that adds missing skill actions to a PF2e character or NPC
  * @param {PF2EActor} actor
  * @returns nothing
  */
 export async function addSkillActions(actor) {
   const skills = actor.system.skills;
   console.log(skills);
-  // Filter skills where rank is 1 (Trained) or higher
-  const trainedSkills = Object.entries(skills)
-    .filter(([key, skill]) => skill.rank >= 1)
-    .map(([key, skill]) => `${skill.slug}`);
 
-  const trainedSkillsNames = Object.entries(skills)
-    .filter(([key, skill]) => skill.rank >= 1)
-    .map(([key, skill]) => `${skill.label}`);
+  const { slugs: trainedSkills, names: trainedSkillsNames } =
+    getTrainedSkills(actor);
 
   if (trainedSkills.length == 0) return;
 
+  const isNPC = actor.type === "npc";
   const compendium = game.packs.get("pf2e.actionspf2e");
 
   ui.notifications.info(
@@ -141,6 +157,14 @@ export async function addSkillActions(actor) {
       // Get full action data
       const action = await compendium.getDocument(entry._id);
       if (!action) return null;
+
+      // For NPCs, skip downtime and exploration actions
+      if (isNPC) {
+        const traits = action.system?.traits?.value ?? [];
+        if (traits.includes("downtime") || traits.includes("exploration")) {
+          return null;
+        }
+      }
 
       // Clone the action
       const newAction = action.toObject();

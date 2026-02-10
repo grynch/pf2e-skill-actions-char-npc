@@ -2,8 +2,7 @@ import { renderActionSubsection, renderCreateActionButton } from "../scripts/vie
 
 Hooks.on("renderCreatureSheetPF2e", (sheet, html, sheetData) => {
     const actor = sheet.actor;
-    const isPC = actor.type != "character";
-    if (!actor || isPC ) return;
+    if (!actor || (actor.type !== "character" && actor.type !== "npc")) return;
 
     renderCreateActionButton(html, actor);
     renderActionSubsection(actor, html);

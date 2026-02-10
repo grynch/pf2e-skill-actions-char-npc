@@ -1,6 +1,6 @@
 {
-  "id": "pf2e-skill-actions",
-  "title": "PF2e Skill Actions",
+  "id": "pf2e-skill-actions-npc",
+  "title": "PF2e Skill Actions NPC",
   "description": "A module that automatically adds Skill Actions to character sheets",
   "version": "1.0.0",
   "library": "false",
@@ -10,8 +10,8 @@
   },
   "authors": [
     {
-      "name": "Rowiz49",
-      "url": "https://github.com/Rowiz49"
+      "name": "Grynch",
+      "url": "https://github.com/grynch"
     }
   ],
   "relationships": {

@@ -6,9 +6,17 @@ import { addSkillActions } from "./actionsCreator.js";
  * @param {*} html
  */
 export function renderActionSubsection(actor, html) {
-  let freeActionsSection = html
-    .find("header:has(button[data-action-type='free']:not([data-traits]))")
-    .next("ol.actions-list");
+  let freeActionsSection;
+
+  if (actor.type === "npc") {
+    freeActionsSection = html.find(
+      ".actions.section-container .section-body .actions-list"
+    );
+  } else {
+    freeActionsSection = html
+      .find("header:has(button[data-action-type='free']:not([data-traits]))")
+      .next("ol.actions-list");
+  }
 
   if (!freeActionsSection.length) return;
   // Create a new section for Skill Actions
@@ -48,12 +56,18 @@ export function renderActionSubsection(actor, html) {
 }
 
 /**
- * Renders a button on the proficiencies tab to add all skill actions
+ * Renders a button on the proficiencies tab (PC) or skills section (NPC) to add all skill actions
  * @param {*} html
  * @param {PF2EActor} actor
  */
 export function renderCreateActionButton(html, actor) {
-  let header = html.find("section[data-tab='proficiencies'] header:first-child");
+  let header;
+
+  if (actor.type === "npc") {
+    header = html.find(".skills.section-container .section-header");
+  } else {
+    header = html.find("section[data-tab='proficiencies'] header:first-child");
+  }
 
   if (header.length) {
     header.append(

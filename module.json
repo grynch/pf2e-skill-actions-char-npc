@@ -2,18 +2,16 @@
   "id": "pf2e-skill-actions-npc",
   "title": "PF2e Skill Actions NPC",
   "description": "A module that automatically adds Skill Actions to character sheets",
+  "url": "https://github.com/grynch/pf2e-skill-actions-char-npc",
+  "manifest": "https://github.com/grynch/pf2e-skill-actions-char-npc/raw/main/module.json",
+  "download": "https://github.com/grynch/pf2e-skill-actions-char-npc/archive/refs/tags/1.6.0.zip",
   "version": "1.0.0",
-  "library": "false",
+  "library": false,
   "compatibility": {
     "minimum": 12,
     "verified": 13
   },
-  "authors": [
-    {
-      "name": "Grynch",
-      "url": "https://github.com/grynch"
-    }
-  ],
+  "authors": [{"name": "grynch", "flags": {}}],
   "relationships": {
     "systems": [
       {
@@ -50,9 +48,6 @@
   ],
   "esmodules": ["scripts/hooks.js"],
   "flags": {},
-  "url": "",
-  "manifest": "",
-  "download": "",
   "license": "LICENSE",
   "readme": "README.md"
 }
